@@ -1,0 +1,6 @@
+*.txt
+*.pem
+*.terraform
+.terraform/
+terraform.*
+.terraform*
