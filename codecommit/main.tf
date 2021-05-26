@@ -9,5 +9,6 @@ resource "aws_codecommit_repository" "codeCommit" {
 
   tags = {
     Name = "CodeCommit"
+    Environment = "Dev"
   }
 }

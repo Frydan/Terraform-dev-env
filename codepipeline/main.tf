@@ -13,6 +13,8 @@ resource "aws_codepipeline" "codepipeline" {
     type     = "S3"
   }
 
+  # ADD DEPENDS ON LIST #
+
   stage {
     name = "Source"
 
@@ -20,32 +22,13 @@ resource "aws_codepipeline" "codepipeline" {
       name             = "Source"
       category         = "Source"
       owner            = "AWS"
-      provider         = "CodeStarSourceConnection"
+      provider         = "CodeCommit"
       version          = "1"
-      output_artifacts = ["source_output"]
+      output_artifacts = ["code"]
 
       configuration = {
-        ConnectionArn    = aws_codestarconnections_connection.example.arn
-        FullRepositoryId = "my-organization/example"
-        BranchName       = "main"
-      }
-    }
-  }
-
-  stage {
-    name = "Build"
-
-    action {
-      name             = "Build"
-      category         = "Build"
-      owner            = "AWS"
-      provider         = "CodeBuild"
-      input_artifacts  = ["source_output"]
-      output_artifacts = ["build_output"]
-      version          = "1"
-
-      configuration = {
-        ProjectName = "test"
+        RepositoryName = var.RepositoryName
+        BranchName = var.BranchName
       }
     }
   }
@@ -57,30 +40,18 @@ resource "aws_codepipeline" "codepipeline" {
       name            = "Deploy"
       category        = "Deploy"
       owner           = "AWS"
-      provider        = "CloudFormation"
+      provider        = "CodeDeploy"
       input_artifacts = ["build_output"]
       version         = "1"
 
       configuration = {
-        ActionMode     = "REPLACE_ON_FAILURE"
-        Capabilities   = "CAPABILITY_AUTO_EXPAND,CAPABILITY_IAM"
-        OutputFileName = "CreateStackOutput.json"
-        StackName      = "MyStack"
-        TemplatePath   = "build_output::sam-templated.yaml"
+        ApplicationName = var.ApplicationName
+        DeploymentGroupName = var.DeploymentGroupName
       }
     }
   }
 }
 
-resource "aws_codestarconnections_connection" "example" {
-  name          = "example-connection"
-  provider_type = "GitHub"
-}
-
-resource "aws_s3_bucket" "codepipeline_bucket" {
-  bucket = "test-bucket"
-  acl    = "private"
-}
 
 resource "aws_iam_role" "codepipeline_role" {
   name = "test-role"
@@ -119,16 +90,9 @@ resource "aws_iam_role_policy" "codepipeline_policy" {
         "s3:PutObject"
       ],
       "Resource": [
-        "${aws_s3_bucket.codepipeline_bucket.arn}",
-        "${aws_s3_bucket.codepipeline_bucket.arn}/*"
+        "${var.arn}",
+        "${var.arn}/*"
       ]
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "codestar-connections:UseConnection"
-      ],
-      "Resource": "${aws_codestarconnections_connection.example.arn}"
     },
     {
       "Effect": "Allow",

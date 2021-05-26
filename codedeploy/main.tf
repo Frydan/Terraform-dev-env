@@ -15,7 +15,7 @@ resource "aws_codedeploy_deployment_group" "cd_dep_grp" {
   service_role_arn      = var.arn
 
   deployment_style {
-    deployment_option = "WITH_TRAFFIC_CONTROL"
+    # LATER: deployment_option = "WITH_TRAFFIC_CONTROL"
     deployment_type   = "IN_PLACE"
   }
 
