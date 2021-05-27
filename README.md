@@ -75,10 +75,12 @@ When refreshing site displayed instance-id should circle around all of created w
 <br />
 <br />
 
-**7. Clone, Modify and Commit code to CodeCommit repository**
+**7. Clone, add Appspec.yml, Modify and Commit code to CodeCommit repository**
+In diffrent directory: <br />
 >$ git clone {link_to_your_AWS_CodeCommit_repo} <br />
 >$ git checkout -b master <br />
 >$ subl index.html <br />
+Copy Appspec.yml file from this repository <br /> 
 >$ git add . <br />
 >$ git commit -m "Commit message" <br />
 >$ git push origin master <br />
