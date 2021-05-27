@@ -9,55 +9,82 @@ terraform {
 
 # Configure the AWS Provider
 provider "aws" {
-  region = "eu-central-1"
+  region                  = var.region
   shared_credentials_file = var.shared_credentials_file
 }
 
+# Create Main s3 bucket
+# Returns object
 module "s3_pipeline_bucket" {
   source = "./s3"
 }
 
-module "elb-module" {
-  source = "./elb"
-  instances = module.webservers.object[*].id
+# Create Elastic Load Balancer for EC2 Apache instances
+# Returns object
+module "elb_module" {
+  source              = "./elb"
+  instances           = module.webservers_module.object[*].id
+  elb_security_groups = module.sg_module.object_sg_ELB.id
 }
 
-module "sg-module" {
+# Create Security Group for EC2 Apache instances and Elastic Load Balancer
+# Returns 2 objects: object_sg_HTTP_SSH & object_sg_ELB
+module "sg_module" {
   source = "./sg"
 }
 
-#module "codecommit" {
-#  source = "./codecommit"
-#}
+# Create CodeCommit repository
+# Returns object
+module "codecommit_module" {
+  source          = "./codecommit"
+  repository_name = var.codecommit_repository_name
+}
 
-module "cdrole" {
+# Create role for CodeDeploy
+# Returns object
+module "cd_role_module" {
   source = "./iam/cdrole"
+}
+
+# Create role for CodePipeline
+# Returns object
+module "cp_role_module" {
+  source     = "./iam/cprole"
   bucket_arn = module.s3_pipeline_bucket.object.arn
 }
 
-module "cd_app_depgrp" {
+# First create CodeDeploy application and then deployment group
+# Returns 2 objects: object_app & object_dep_grp
+module "cd_app_depgrp_module" {
   source = "./codedeploy"
-  arn = module.cdrole.object.arn
-}
-module "codepipeline" {
-  source = "./codepipeline"
-  s3bucket = module.s3_pipeline_bucket.object.bucket
-  arn = module.s3_pipeline_bucket.object.arn
-  RepositoryName = var.codecommit_repository_name #module.codecommit.object.repository_name
-  BranchName = var.BranchName
-  ApplicationName = module.cd_app_depgrp.object_app.name
-  DeploymentGroupName = module.cd_app_depgrp.object_dep_grp.deployment_group_name  
+  arn    = module.cd_role_module.object.arn
 }
 
-# For future codeBuild
-#module "jenkins" {
-#  source = "./ec2/jenkins"
-#  security_groups = [module.sg-module.object_sg_Jenkins_SSH.name]
-#}
+# Create main CodePipeline
+module "codepipeline_module" {
+  source              = "./codepipeline"
+  role_arn            = module.cp_role_module.object.arn
+  s3bucket            = module.s3_pipeline_bucket.object.bucket
+  RepositoryName      = module.codecommit_module.object.repository_name
+  BranchName          = var.BranchName
+  ApplicationName     = module.cd_app_depgrp_module.object_app.name
+  DeploymentGroupName = module.cd_app_depgrp_module.object_dep_grp.deployment_group_name
+}
 
-module "webservers" {
-  source = "./ec2/webservers"
-  security_groups = [module.sg-module.object_sg_HTTP_SSH.name]
+## TODO:  Jenkins for future build stage ##
+/*
+module "jenkins" {
+  source = "./ec2/jenkins"
+  security_groups = [module.sg_module.object_sg_Jenkins_SSH.name]
+}
+*/
+
+# Create EC2 instances Apache web servers
+# Returns object (list)
+module "webservers_module" {
+  source           = "./ec2/webservers"
+  webservers_count = var.webservers_count
+  security_groups  = [module.sg_module.object_sg_HTTP_SSH.name]
 }
 
 # For future codeBuild
@@ -65,10 +92,12 @@ module "webservers" {
 #    value = module.jenkins.object.public_ip
 #}
 
+# Display IPs of created EC2 Apache web servers
 output "webServers_ips" {
-    value = module.webservers.object[*].public_ip
+  value = module.webservers_module.object[*].public_ip
 }
 
+# Display DNS name of created Elastic Load Balancer
 output "loadBalancer_dns_name" {
-    value = module.elb-module.object.dns_name
+  value = module.elb_module.object.dns_name
 }

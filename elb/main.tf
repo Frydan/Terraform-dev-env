@@ -1,11 +1,12 @@
 terraform {
-    required_version = ">= 0.15"
+  required_version = ">= 0.15"
 }
 
 # Create a Load Balancer for Web Service Instances
 resource "aws_elb" "elb_webServers" {
   name               = "webServers-loadBalancer"
   availability_zones = ["eu-central-1a", "eu-central-1b", "eu-central-1c"]
+  security_groups    = [var.elb_security_groups]
   listener {
     instance_port     = 80
     instance_protocol = "http"
@@ -28,7 +29,7 @@ resource "aws_elb" "elb_webServers" {
   connection_draining_timeout = 400
 
   tags = {
-    Name = "webServersELB"
+    Name        = "webServersELB"
     Environment = "Dev"
   }
 }

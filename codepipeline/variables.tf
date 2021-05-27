@@ -1,3 +1,7 @@
+variable "role_arn" {
+  type = string
+}
+
 variable "s3bucket" {
   type = string
 }
@@ -18,6 +22,3 @@ variable "DeploymentGroupName" {
   type = string
 }
 
-variable "arn" {
-  type = string
-}

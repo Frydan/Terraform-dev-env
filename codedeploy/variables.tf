@@ -1,3 +1,3 @@
 variable "arn" {
-    type = string
+  type = string
 }

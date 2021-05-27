@@ -1,3 +1,3 @@
 variable "security_groups" {
-    type = list
+  type = list(any)
 }

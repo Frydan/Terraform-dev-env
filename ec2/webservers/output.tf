@@ -1,3 +1,3 @@
 output "object" {
-    value = aws_instance.webServers
+  value = aws_instance.webServers
 }

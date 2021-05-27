@@ -1,3 +1,3 @@
 output "object" {
-    value = aws_instance.jenkins
+  value = aws_instance.jenkins
 }

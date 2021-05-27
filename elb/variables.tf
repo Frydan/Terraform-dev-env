@@ -1,3 +1,7 @@
 variable "instances" {
-    type = list
+  type = list(any)
+}
+
+variable "elb_security_groups" {
+  type = string
 }
