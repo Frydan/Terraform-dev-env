@@ -3,10 +3,10 @@ terraform {
 }
 
 resource "aws_s3_bucket" "s3_pipeline_bucket" {
-  bucket = "df-aws-test-pipeline"
-  acl    = "private"
+  bucket        = "df-aws-test-pipeline"
+  acl           = "private"
   force_destroy = true
-  
+
   versioning {
     enabled = true
   }

@@ -5,9 +5,13 @@ files:
     destination: /var/www/html/
 hooks:
   BeforeInstall:
+    - location: deploy_scripts/delete_old_files
+      timeout: 20
+      runas: root
     - location: deploy_scripts/install_dependencies
       timeout: 300
       runas: root
+  ApplicationStart:
     - location: deploy_scripts/start_server
       timeout: 300
       runas: root

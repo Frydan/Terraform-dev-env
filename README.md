@@ -80,7 +80,7 @@ In diffrent directory: <br />
 >$ git clone {link_to_your_AWS_CodeCommit_repo} <br />
 >$ git checkout -b master <br />
 >$ subl index.html <br />
-Copy Appspec.yml file from this repository <br /> 
+Copy **appspec.yml** file and also **deploy_scripts** directory from this repository <br /> 
 >$ git add . <br />
 >$ git commit -m "Commit message" <br />
 >$ git push origin master <br />

@@ -20,6 +20,11 @@ resource "aws_iam_role" "codepipeline_role" {
   ]
 }
 EOF
+  tags = {
+    Name        = "CodePipelineRole"
+    Type        = "Role"
+    Environment = "Dev"
+  }
 }
 
 resource "aws_iam_role_policy" "codepipeline_policy" {

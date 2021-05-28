@@ -5,8 +5,8 @@ variable "region" {
 }
 
 variable "key_webservers" {
-  type = string
-  default = "webserver-access"
+  type        = string
+  default     = "webserver-access"
   description = "Name of the SSH key pair You generated for webservers"
 }
 

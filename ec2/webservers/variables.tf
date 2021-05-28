@@ -8,3 +8,7 @@ variable "webservers_count" {
 variable "key_name" {
   type = string
 }
+
+variable "role" {
+  type = string
+}

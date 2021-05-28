@@ -40,6 +40,12 @@ module "codecommit_module" {
   repository_name = var.codecommit_repository_name
 }
 
+# Create role for EC2 web server instances
+# Returns object
+module "ws_role_module" {
+  source = "./iam/wsrole"
+}
+
 # Create role for CodeDeploy
 # Returns object
 module "cd_role_module" {
@@ -84,8 +90,9 @@ module "jenkins" {
 module "webservers_module" {
   source           = "./ec2/webservers"
   webservers_count = var.webservers_count
-  key_name = var.key_webservers
+  key_name         = var.key_webservers
   security_groups  = [module.sg_module.object_sg_HTTP_SSH.name]
+  role             = module.ws_role_module.object.name
 }
 
 # For future codeBuild

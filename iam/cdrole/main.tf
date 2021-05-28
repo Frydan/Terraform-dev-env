@@ -22,7 +22,8 @@ resource "aws_iam_role" "codedeploy_role" {
 }
 EOF
   tags = {
-    Name        = "codedeploy_role"
+    Name        = "CodeDeployRole"
+    Type        = "Role"
     Environment = "Dev"
   }
 }
