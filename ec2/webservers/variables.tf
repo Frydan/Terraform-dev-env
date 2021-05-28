@@ -4,3 +4,7 @@ variable "security_groups" {
 variable "webservers_count" {
   type = number
 }
+
+variable "key_name" {
+  type = string
+}

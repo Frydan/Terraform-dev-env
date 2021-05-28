@@ -84,6 +84,7 @@ module "jenkins" {
 module "webservers_module" {
   source           = "./ec2/webservers"
   webservers_count = var.webservers_count
+  key_name = var.key_webservers
   security_groups  = [module.sg_module.object_sg_HTTP_SSH.name]
 }
 

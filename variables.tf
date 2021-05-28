@@ -4,6 +4,12 @@ variable "region" {
   description = "Which AWS region should be used"
 }
 
+variable "key_webservers" {
+  type = string
+  default = "webserver-access"
+  description = "Name of the SSH key pair You generated for webservers"
+}
+
 variable "shared_credentials_file" {
   type        = string
   default     = "/home/dzordzo/.aws/credentials"
