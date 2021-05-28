@@ -79,8 +79,10 @@ When refreshing site displayed instance-id should circle around all of created w
 
 **7. Clone, add Appspec.yml, Modify and Commit code to CodeCommit repository**
 In diffrent directory: <br />
->$ git clone {link_to_your_AWS_CodeCommit_repo} <br />
->$ git checkout -b master <br />
+>$ git clone {link_to_your_AWS_CodeCommit_repo}
+
+
+>$ git checkout -b master
 
 Copy **appspec.yml** file and also **deploy_scripts** directory from this repository <br />
 All website files should be stored in new **/html** directory <br />
@@ -102,8 +104,9 @@ Your repository contents should something look like this: <br />
 
 >$ git push origin master
 
-Now while pushing new code to CodeCommit repository with Your AWS Git credentials created pipeline should update existing EC2 web server instances with new files from **html** directory.
-
+Now while pushing new code to CodeCommit repository with Your AWS Git credentials created pipeline should update existing EC2 web server instances with new files from **html** directory. <br />
+Also for testing purposes I've added responding EC2 instance's ID so You could check which instance is responding / whether Elastic Load Balancer is working. <br />
+Update takes about 2 minutes per instance to display new content after push command so be patient :) <br /> 
 <br />
 <br />
 
