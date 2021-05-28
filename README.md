@@ -1,16 +1,23 @@
 # Project Terraform Dev Env
 
-Requirements:
+This project was (and still is) created to automate creation of CI/CD pipeline using Terraform and AWS cloud services.
+The main focus was automating deployment of new web application versions so You can focus on coding while everything server-side like load balancing, auto scaling depending on server load or deploying new versions is taken care of automatically.
+
+<br />
+
+**Requirements:**
  - Terraform (0.15 or newer)
  - AWS Account (Free Tier)
 
 <br />
 <br />
-To deploy this AWS pipeline follow the steps listed below:
+
+## To deploy this AWS pipeline follow the steps listed below:
+
 <br />
 <br />
 
-**0. Prerequisites**
+### **0. Prerequisites**
 
 Make sure Your installed Terraform version is **0.15 or newer**:
 >$ terraform -v
@@ -21,13 +28,13 @@ Make sure You are logged in to AWS and if not use this command to do so:
 <br />
 <br />
 
-**1. Clone this repository**
+### **1. Clone this repository**
 >$ git clone https://github.com/Frydan/Terraform-dev-env.git
 
 <br />
 <br />
 
-**2. Setup Your AWS Git credentials**
+### **2. Setup Your AWS Git credentials**
 
 On AWS web console go to: <br />
 IAM > Users > {your_username} > Security credentials > Http Git credentials for AWS CodeCommit > Generate <br /> <br />
@@ -36,7 +43,7 @@ And copy Your AWS Git credentials
 <br />
 <br />
 
-**3. Generate key pair for web server EC2 instances**
+### **3. Generate key pair for web server EC2 instances**
 
 On AWS web console go to: <br />
 EC2 > Key pairs > Create key pair <br /> <br />
@@ -45,7 +52,7 @@ Setup name, extension, create it and download
 <br />
 <br />
 
-**4. Setup Terraform variables**
+### **4. Setup Terraform variables**
 
 In main directory **variables.tf** set these default variables: <br />
 **region** = Your AWS region e.g. **eu-central-1** <br />
@@ -57,7 +64,7 @@ All of them are described <br />
 <br />
 <br />
 
-**5. Run Terraform**
+### **5. Run Terraform**
 >$ terraform init
 
 >$ terraform plan
@@ -69,7 +76,7 @@ Check if everything seems good
 <br />
 <br />
 
-**6. Check if everything is working**
+### **6. Check if everything is working**
 
 After couple minutes go to displayed Elastic Load Balancer's DNS. <br />
 When refreshing site displayed instance-id should circle around all of created web server instances
@@ -77,7 +84,7 @@ When refreshing site displayed instance-id should circle around all of created w
 <br />
 <br />
 
-**7. Clone, add Appspec.yml, Modify and Commit code to CodeCommit repository**
+### **7. Clone, add Appspec.yml, Modify and Commit code to CodeCommit repository**
 In diffrent directory: <br />
 >$ git clone {link_to_your_AWS_CodeCommit_repo}
 
