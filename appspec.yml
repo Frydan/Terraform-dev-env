@@ -1,14 +1,18 @@
 version: 0.0
 os: linux
 files:
-  - source: /index.html
-    destination: /var/www/html/
+  - source: /html/
+    destination: /var/www/html
 hooks:
   BeforeInstall:
     - location: deploy_scripts/delete_old_files
       timeout: 20
       runas: root
     - location: deploy_scripts/install_dependencies
+      timeout: 300
+      runas: root
+  AfterInstall:
+    - location: deploy_scripts/append_instance_id
       timeout: 300
       runas: root
   ApplicationStart:

@@ -30,6 +30,6 @@ variable "codecommit_repository_name" {
 
 variable "webservers_count" {
   type        = number
-  default     = 3
+  default     = 2
   description = "Number of EC2 Apache instances"
 }
