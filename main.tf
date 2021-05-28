@@ -22,9 +22,9 @@ module "s3_pipeline_bucket" {
 # Create Elastic Load Balancer for EC2 Apache instances
 # Returns object
 module "elb_module" {
-  source              = "./elb"
-  instances           = module.webservers_module.object[*].id
-  elb_security_groups = module.sg_module.object_sg_ELB.id
+  source             = "./elb"
+  elb_security_group = module.sg_module.object_sg_ELB.id
+  availability_zones = var.availability_zones_elb
 }
 
 # Create Security Group for EC2 Apache instances and Elastic Load Balancer
@@ -62,8 +62,9 @@ module "cp_role_module" {
 # First create CodeDeploy application and then deployment group
 # Returns 2 objects: object_app & object_dep_grp
 module "cd_app_depgrp_module" {
-  source = "./codedeploy"
-  arn    = module.cd_role_module.object.arn
+  source   = "./codedeploy"
+  arn      = module.cd_role_module.object.arn
+  elb_info = module.elb_module.object.name
 }
 
 # Create main CodePipeline
@@ -85,8 +86,29 @@ module "jenkins" {
 }
 */
 
+# Returns object
+module "lc_webservers_module" {
+  source         = "./lc"
+  security_group = module.sg_module.object_sg_HTTP_SSH.id
+  role           = module.ws_role_module.object.name
+  image_id       = var.lc_image_id
+  instance_type  = var.lc_instance_type
+  key_name       = var.key_name_webservers
+}
+
+module "asg_webservers_module" {
+  source               = "./asg"
+  asg_subnets          = var.asg_subnets
+  load_balancer        = module.elb_module.object.id
+  launch_configuration = module.lc_webservers_module.object.name
+  min_size             = var.min_size_asg_webservers
+  desired_capacity     = var.desired_capacity_asg_webservers
+  max_size             = var.max_size_asg_webservers
+}
+
 # Create EC2 instances Apache web servers
 # Returns object (list)
+/*
 module "webservers_module" {
   source           = "./ec2/webservers"
   webservers_count = var.webservers_count
@@ -94,3 +116,4 @@ module "webservers_module" {
   security_groups  = [module.sg_module.object_sg_HTTP_SSH.name]
   role             = module.ws_role_module.object.name
 }
+*/
