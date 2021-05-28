@@ -79,8 +79,16 @@ When refreshing site displayed instance-id should circle around all of created w
 In diffrent directory: <br />
 >$ git clone {link_to_your_AWS_CodeCommit_repo} <br />
 >$ git checkout -b master <br />
->$ subl index.html <br />
-Copy **appspec.yml** file and also **deploy_scripts** directory from this repository <br /> 
+
+Copy **appspec.yml** file and also **deploy_scripts** directory from this repository <br />
+All website files should be stored in new **/html** directory <br />
+
+>$ subl ./html/index.html <br />
+>$ echo "\<h1>New site\</h1>" > ./html/second.html <br />
+
+Your repository contents should something look like this: <br />
+![image](https://user-images.githubusercontent.com/74418919/119979085-bf587600-bfba-11eb-8433-28950d65fd60.png)
+
 >$ git add . <br />
 >$ git commit -m "Commit message" <br />
 >$ git push origin master <br />
