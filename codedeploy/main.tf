@@ -15,9 +15,16 @@ resource "aws_codedeploy_deployment_group" "cd_dep_grp" {
   service_role_arn      = var.arn
 
   deployment_style {
-    # LATER: deployment_option = "WITH_TRAFFIC_CONTROL"
-    deployment_type = "IN_PLACE"
+    deployment_option = "WITH_TRAFFIC_CONTROL"
+    deployment_type   = "IN_PLACE"
   }
+
+  load_balancer_info {
+    elb_info {
+      name = var.elb_info
+    }
+  }
+
 
 
   ec2_tag_set {

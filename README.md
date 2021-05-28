@@ -51,6 +51,8 @@ In main directory **variables.tf** set these default variables: <br />
 **region** = Your AWS region e.g. **eu-central-1** <br />
 **key_webservers** = Name of the keypair generated for web server instances <br />
 **shared_credentials_file** = Place where Your AWS credentials are stored e.g. **/home/myuser/.aws/credentials** <br />
+These 3 are the most important ones, You can also modify a lot more variables I've put here. <br />
+All of them are described <br />
 
 <br />
 <br />
@@ -83,17 +85,24 @@ In diffrent directory: <br />
 Copy **appspec.yml** file and also **deploy_scripts** directory from this repository <br />
 All website files should be stored in new **/html** directory <br />
 
->$ subl ./html/index.html <br />
->$ echo "\<h1>New site\</h1>" > ./html/second.html <br />
+>$ subl ./html/index.html
+
+
+>$ echo "\<h1>New site\</h1>" > ./html/second.html
+
 
 Your repository contents should something look like this: <br />
 ![image](https://user-images.githubusercontent.com/74418919/119979085-bf587600-bfba-11eb-8433-28950d65fd60.png)
 
->$ git add . <br />
->$ git commit -m "Commit message" <br />
->$ git push origin master <br />
+>$ git add .
 
-Now while pushing new code to CodeCommit repository with Your AWS Git credentials created pipeline should update existing EC2 web server instances with new index.html file from repository
+
+>$ git commit -m "Commit message"
+
+
+>$ git push origin master
+
+Now while pushing new code to CodeCommit repository with Your AWS Git credentials created pipeline should update existing EC2 web server instances with new files from **html** directory.
 
 <br />
 <br />

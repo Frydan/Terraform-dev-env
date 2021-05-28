@@ -5,8 +5,8 @@ terraform {
 # Create a Load Balancer for Web Service Instances
 resource "aws_elb" "elb_webServers" {
   name               = "webServers-loadBalancer"
-  availability_zones = ["eu-central-1a", "eu-central-1b", "eu-central-1c"]
-  security_groups    = [var.elb_security_groups]
+  availability_zones = var.availability_zones
+  security_groups    = [var.elb_security_group]
   listener {
     instance_port     = 80
     instance_protocol = "http"
@@ -22,7 +22,6 @@ resource "aws_elb" "elb_webServers" {
     interval            = 30
   }
 
-  instances                   = var.instances
   cross_zone_load_balancing   = true
   idle_timeout                = 400
   connection_draining         = true
