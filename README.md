@@ -52,7 +52,17 @@ Setup name, extension, create it and download
 <br />
 <br />
 
-### **4. Setup Terraform variables**
+### **4. Manually create s3 bucket for tfstate file**
+
+On AWS web console go to: <br />
+S3 > Create Bucket<br /> <br />
+Set the name, enable versioning and encryption with SSE-S3
+Now change the **bucket** and **region** variables inside **state.tf** file so that the info matches with the bucket You created.
+
+<br />
+<br />
+
+### **5. Setup Terraform variables**
 
 In main directory **variables.tf** set these default variables: <br />
 **region** = Your AWS region e.g. **eu-central-1** <br />
@@ -64,7 +74,7 @@ All of them are described <br />
 <br />
 <br />
 
-### **5. Run Terraform**
+### **6. Run Terraform**
 >$ terraform init
 
 >$ terraform plan
@@ -76,7 +86,7 @@ Check if everything seems good
 <br />
 <br />
 
-### **6. Check if everything is working**
+### **7. Check if everything is working**
 
 After couple minutes go to displayed Elastic Load Balancer's DNS. <br />
 When refreshing site displayed instance-id should circle around all of created web server instances
@@ -84,7 +94,7 @@ When refreshing site displayed instance-id should circle around all of created w
 <br />
 <br />
 
-### **7. Clone, add Appspec.yml, Modify and Commit code to CodeCommit repository**
+### **8. Clone, add Appspec.yml, Modify and Commit code to CodeCommit repository**
 In diffrent directory: <br />
 >$ git clone {link_to_your_AWS_CodeCommit_repo}
 
