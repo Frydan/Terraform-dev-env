@@ -16,11 +16,13 @@ variable "shared_credentials_file" {
   description = "Where AWS credenials files are stored locally"
 }
 
+/*
 variable "asg_subnets" {
   type        = list(any)
   default     = ["subnet-af4acde3", "subnet-d73174bd", "subnet-11a9196d"]
   description = "List of subnets where Auto Scaling Group will deploy EC2 web server instances"
 }
+*/
 
 variable "min_size_asg_webservers" {
   type        = number

@@ -13,9 +13,38 @@ provider "aws" {
   shared_credentials_file = var.shared_credentials_file
 }
 
+# Create main VPC
+# Returns object
+module "vpc_module" {
+  source = "./vpc"
+}
+
+# Create subnets
+# Returns objects list: [ object_s1, object_s2, object_s3 ]
+module "subnets_module" {
+  source = "./subnets"
+  vpc_id = module.vpc_module.object.id
+}
+
+# Create Internet Gateway
+# Returns object
+module "igw_module" {
+  source = "./igw"
+  vpc_id = module.vpc_module.object.id
+}
+
+# Create Route Table
+# Returns object
+module "rt_module" {
+  source = "./rt"
+  vpc_id = module.vpc_module.object.id
+  gateway_id = module.igw_module.object.id
+  subnets = module.subnets_module.objects
+}
+
 # Create Main s3 bucket
 # Returns object
-module "s3_pipeline_bucket" {
+module "s3_pipeline_bucket_module" {
   source = "./s3"
 }
 
@@ -25,12 +54,14 @@ module "elb_module" {
   source             = "./elb"
   elb_security_group = module.sg_module.object_sg_ELB.id
   availability_zones = var.availability_zones_elb
+  subnets = module.subnets_module.objects[*].id
 }
 
 # Create Security Group for EC2 Apache instances and Elastic Load Balancer
 # Returns 2 objects: object_sg_HTTP_SSH & object_sg_ELB
 module "sg_module" {
   source = "./sg"
+  vpc_id = module.vpc_module.object.id
 }
 
 # Create CodeCommit repository
@@ -56,7 +87,7 @@ module "cd_role_module" {
 # Returns object
 module "cp_role_module" {
   source     = "./iam/cprole"
-  bucket_arn = module.s3_pipeline_bucket.object.arn
+  bucket_arn = module.s3_pipeline_bucket_module.object.arn
 }
 
 # First create CodeDeploy application and then deployment group
@@ -71,7 +102,7 @@ module "cd_app_depgrp_module" {
 module "codepipeline_module" {
   source              = "./codepipeline"
   role_arn            = module.cp_role_module.object.arn
-  s3bucket            = module.s3_pipeline_bucket.object.bucket
+  s3bucket            = module.s3_pipeline_bucket_module.object.bucket
   RepositoryName      = module.codecommit_module.object.repository_name
   BranchName          = var.BranchName
   ApplicationName     = module.cd_app_depgrp_module.object_app.name
@@ -99,7 +130,7 @@ module "lc_webservers_module" {
 
 module "asg_webservers_module" {
   source               = "./asg"
-  asg_subnets          = var.asg_subnets
+  asg_subnets          = module.subnets_module.objects[*].id
   load_balancer        = module.elb_module.object.id
   launch_configuration = module.lc_webservers_module.object.name
   min_size             = var.min_size_asg_webservers

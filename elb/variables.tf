@@ -5,3 +5,7 @@ variable "elb_security_group" {
 variable "availability_zones" {
   type = list(any)
 }
+
+variable "subnets" {
+  type = list
+}
