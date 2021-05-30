@@ -118,6 +118,7 @@ module "jenkins" {
 }
 */
 
+# Create Launch Configuration for web servers
 # Returns object
 module "lc_webservers_module" {
   source         = "./lc"
@@ -128,6 +129,7 @@ module "lc_webservers_module" {
   key_name       = var.key_name_webservers
 }
 
+# Create Auto Scaling Group for web servers
 module "asg_webservers_module" {
   source               = "./asg"
   asg_subnets          = module.subnets_module.objects[*].id
@@ -137,15 +139,3 @@ module "asg_webservers_module" {
   desired_capacity     = var.desired_capacity_asg_webservers
   max_size             = var.max_size_asg_webservers
 }
-
-# Create EC2 instances Apache web servers
-# Returns object (list)
-/*
-module "webservers_module" {
-  source           = "./ec2/webservers"
-  webservers_count = var.webservers_count
-  key_name         = var.key_webservers
-  security_groups  = [module.sg_module.object_sg_HTTP_SSH.name]
-  role             = module.ws_role_module.object.name
-}
-*/
