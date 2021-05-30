@@ -62,6 +62,12 @@ variable "BranchName" {
   description = "Name of CodeCommit branch to be created"
 }
 
+variable "pipeline_name" {
+  type        = string
+  default     = "tf-test-pipeline"
+  description = "Name of the CodePipeline to be created"
+}
+
 variable "codecommit_repository_name" {
   type        = string
   default     = "ProjectRepo"

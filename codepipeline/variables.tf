@@ -22,3 +22,7 @@ variable "DeploymentGroupName" {
   type = string
 }
 
+variable "pipeline_name" {
+  type = string
+}
+

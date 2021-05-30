@@ -76,6 +76,7 @@ module "codepipeline_module" {
   BranchName          = var.BranchName
   ApplicationName     = module.cd_app_depgrp_module.object_app.name
   DeploymentGroupName = module.cd_app_depgrp_module.object_dep_grp.deployment_group_name
+  pipeline_name       = var.pipeline_name
 }
 
 ## TODO:  Jenkins for future build stage ##

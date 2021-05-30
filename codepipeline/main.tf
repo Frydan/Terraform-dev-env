@@ -5,7 +5,7 @@ terraform {
 
 # Create main CodePipeline
 resource "aws_codepipeline" "codepipeline" {
-  name     = "tf-test-pipeline"
+  name     = var.pipeline_name
   role_arn = var.role_arn
 
   # Use created s3 bucket as main artifact store
