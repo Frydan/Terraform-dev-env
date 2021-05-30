@@ -7,5 +7,5 @@ variable "availability_zones" {
 }
 
 variable "subnets" {
-  type = list
+  type = list(any)
 }

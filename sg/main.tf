@@ -43,7 +43,7 @@ terraform {
 resource "aws_security_group" "sg_HTTP_SSH" {
   name        = "allow_HTTP_SSH"
   description = "Allow HTTP and SSH"
-  vpc_id = var.vpc_id
+  vpc_id      = var.vpc_id
 
   ingress {
     description = "HTTP"
@@ -79,7 +79,7 @@ resource "aws_security_group" "sg_HTTP_SSH" {
 resource "aws_security_group" "sg_ELB" {
   name        = "allow_ELB_traffic"
   description = "Allow HTTP"
-  vpc_id = var.vpc_id
+  vpc_id      = var.vpc_id
 
   ingress {
     description = "HTTP"

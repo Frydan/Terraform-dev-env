@@ -4,10 +4,9 @@ terraform {
 
 # Create a Load Balancer for Web Service Instances
 resource "aws_elb" "elb_webServers" {
-  name               = "webServers-loadBalancer"
-  #availability_zones = var.availability_zones
-  security_groups    = [var.elb_security_group]
-  subnets = var.subnets
+  name = "webServers-loadBalancer"
+  security_groups = [var.elb_security_group]
+  subnets         = var.subnets
 
   listener {
     instance_port     = 80

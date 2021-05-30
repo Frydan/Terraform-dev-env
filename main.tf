@@ -36,10 +36,10 @@ module "igw_module" {
 # Create Route Table
 # Returns object
 module "rt_module" {
-  source = "./rt"
-  vpc_id = module.vpc_module.object.id
+  source     = "./rt"
+  vpc_id     = module.vpc_module.object.id
   gateway_id = module.igw_module.object.id
-  subnets = module.subnets_module.objects
+  subnets    = module.subnets_module.objects
 }
 
 # Create Main s3 bucket
@@ -48,13 +48,20 @@ module "s3_pipeline_bucket_module" {
   source = "./s3"
 }
 
+# Create Target Group for ELB
+module "tg_module" {
+  source = "./tg"
+  vpc_id = module.vpc_module.object.id
+
+}
+
 # Create Elastic Load Balancer for EC2 Apache instances
 # Returns object
 module "elb_module" {
   source             = "./elb"
   elb_security_group = module.sg_module.object_sg_ELB.id
   availability_zones = var.availability_zones_elb
-  subnets = module.subnets_module.objects[*].id
+  subnets            = module.subnets_module.objects[*].id
 }
 
 # Create Security Group for EC2 Apache instances and Elastic Load Balancer

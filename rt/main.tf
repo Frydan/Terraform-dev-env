@@ -11,12 +11,12 @@ resource "aws_route_table" "main_rt" {
   }
 
   route {
-    ipv6_cidr_block        = "::/0"
-    gateway_id = var.gateway_id
+    ipv6_cidr_block = "::/0"
+    gateway_id      = var.gateway_id
   }
 
   tags = {
-    Name = "RouteTable"
+    Name        = "RouteTable"
     Environment = "Dev"
   }
 }
@@ -37,7 +37,7 @@ resource "aws_route_table_association" "main_rta_s3" {
 }
 */
 resource "aws_route_table_association" "main_rta" {
-    count = "${length(var.subnets.*.id)}"
-    subnet_id = "${element(var.subnets.*.id, count.index)}"
-    route_table_id = aws_route_table.main_rt.id
+  count          = length(var.subnets.*.id)
+  subnet_id      = element(var.subnets.*.id, count.index)
+  route_table_id = aws_route_table.main_rt.id
 }
