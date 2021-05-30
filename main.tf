@@ -48,12 +48,6 @@ module "s3_pipeline_bucket_module" {
   source = "./s3"
 }
 
-# Create Target Group for ELB
-module "tg_module" {
-  source = "./tg"
-  vpc_id = module.vpc_module.object.id
-
-}
 
 # Create Elastic Load Balancer for EC2 Apache instances
 # Returns object

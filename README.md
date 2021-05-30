@@ -131,5 +131,5 @@ Update takes about 2 minutes per instance to display new content after push comm
 
 This project was a learning experience for me while learning about Terraform and AWS cloud services. <br />
 It may not work perfectly yet but i will continue to develop it further as I learn more and more. <br />
-Some of the things I want to add now are: third (build) stage of pipeline with Jenkins, switch from CodeCommit to GitHub for source stage, Auto Scaling Groups depending on load for web server instances, networking ( things like VPCs, subnets, NACLs etc. ) and others.
+Some of the things I want to add now are: third (build) stage of pipeline with Jenkins and switch from CodeCommit to GitHub for source stage
 
